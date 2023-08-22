@@ -10,11 +10,11 @@ export interface CLRProps {
 export const RequesReceivedtList = ({list, dept_name}: CLRProps) =>{
     //console.log('teste'+list.map(resp => resp));
     return(
-        <div>
-            {list.map(rc=>
-                <div>
-                    <h4><Link to={`/departments/${dept_name}/requests/${rc.request_id}`}>{rc.subject}</Link></h4>
-                </div>)}
+        <div className="req-list-container">
+            {list.length?list.map(rc=>
+                <div className="req-container">
+                    <Link to={`/departments/${dept_name}/requests/${rc.request_id}`} className="link">{rc.subject}</Link>
+                </div>): <p>No requests founds</p>}
         </div>
     )
 }

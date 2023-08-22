@@ -23,6 +23,9 @@ import { CreateRequestPage } from './Pages/CreateRequestPage'
 import { ChatPage } from './Pages/Chat/Chat'
 import { AppContext } from './Context/AppContext'
 import { ChatDetailPage } from './Pages/Chat/ChatDetail'
+import { AllUsersPage } from './Pages/UserPages/AllUserPage'
+import { AllConnectionPage } from './Pages/UserPages/AllConnections'
+import { ProfileDetailPage } from './Pages/UserPages/ProfileDetail'
 
 
 axios.defaults.baseURL = "http://localhost:8080/"
@@ -101,8 +104,19 @@ const routes = createBrowserRouter([
       {
         path: "/chat/conversation/:userId",
         element: <ChatDetailPage/>
+      },
+      {
+        path: "/chat/add",
+        element: <AllUsersPage/>
+      },
+      {
+        path: "/chat/connections",
+        element: <AllConnectionPage/>
+      },
+      {
+        path: "/chat/connections/detail/:profileId",
+        element: <ProfileDetailPage/>
       }
-
       
     ]
   }

@@ -9,7 +9,7 @@ export const CreateRequestPage= () =>{
     const {dept_id} = useParams();
     const [createBody, setCreateBody] = useState({} as ICreateRequest);
     const [departments, setDepartments] = useState([] as IDepartment[]);
-    const {getDepartmentList, createRequest} = useContext(AppContext);
+    const {getDepartmentList, createRequest, currentUser} = useContext(AppContext);
     const [img, setImg] = useState("");
     /*const formData = new FormData;
     formData.append("sender_dept_id", send_dept_id.toString());
@@ -30,13 +30,18 @@ export const CreateRequestPage= () =>{
         if(dept_id){
             send_dept_id = dept_id;
         }
+
+        let cc = 0;
+        if(currentUser?.id){
+            cc = currentUser.id
+        }
         const formData = new FormData;
         formData.append("sender_dept_id", send_dept_id);
         formData.append("destination_dept_id", createBody.destination_dept_id.toString());
         formData.append("subject", createBody.subject);
         formData.append("request_body", createBody.body);
         formData.append("request_image", img);
-        createRequest(1, formData)
+        createRequest(cc, formData)
     };
 
     const handleOnChange = (e:any) =>{
@@ -52,31 +57,38 @@ export const CreateRequestPage= () =>{
     console.log(img)
 
     return(
-        <div>
-            <p>Create a new Request {dept_id}</p>
-            <form onSubmit={(e)=> handleCreateRequest(e)}>
-                <div className="form-group">
-                    <select onChange={(e)=> handleOnChange(e)} name="destination_dept_id" /*defaultValue={departments[0].id}*/>
-                        {departments.map(dept => <option value={dept.id}>{dept.department_name}</option>)}
-                    </select>
-                    {/*<Select options={departments} defaultValue={departments[0]} name="destination_dept_id" onChange={(e)=> handleOnChange(e)}></Select>*/}
+        <div className="create-request-container">
+            <div className="create-request">
+                <div className="header">
+                    <h3>Create a new Request</h3>
+                </div>
+                
+                <form onSubmit={(e)=> handleCreateRequest(e)}>
+                    <div className="form-group">
+                        <select onChange={(e)=> handleOnChange(e)} name="destination_dept_id" /*defaultValue={departments[0].id}*/>
+                            {departments.map(dept => <option value={dept.id} key={dept.id}>{dept.department_name}</option>)}
+                        </select>
+                        {/*<Select options={departments} defaultValue={departments[0]} name="destination_dept_id" onChange={(e)=> handleOnChange(e)}></Select>*/}
 
-                </div>
-                <div className="form-group">
-                    <label htmlFor="subject" className="form-label mt-3">SUBJECT : </label>
-                    <input name="subject" className="form-control" id="subject" onChange={(e)=> handleOnChange(e)}></input>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="body" className="form-label mt-3">BODY : </label>
-                    <input name="body" className="form-control" id="body" onChange={(e)=> handleOnChange(e)}></input>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="image" className="form-label mt-3">Image</label>
-                    <input name="image" className="form-control" id="image" type="file" onChange={(e:any)=> handleSetImg(e.target.files[0])}></input>
-                </div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="subject" className="form-label mt-3">SUBJECT : </label>
+                        <input name="subject" className="form-control" id="subject" onChange={(e)=> handleOnChange(e)}></input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="body" className="form-label mt-3">BODY : </label>
+                        <input name="body" className="form-control" id="body" onChange={(e)=> handleOnChange(e)}></input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="image" className="form-label mt-3">Image</label>
+                        <input name="image" className="form-control" id="image" type="file" onChange={(e:any)=> handleSetImg(e.target.files[0])}></input>
+                    </div>
 
-                <input type="submit" value={"send"}></input>
-            </form>
+                    <input type="submit" value={"send"} className="btn-submit"></input>
+                </form>
+        
+            </div>
+            
         </div>
     )
 }

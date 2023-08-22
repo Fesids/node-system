@@ -8,10 +8,14 @@ import { ISalesRequest, SaleRequestCreate } from "../Interfaces/SaleRequest";
 import { ICreateRequest, IRequest } from "../Interfaces/Request";
 import { IChat } from "../Interfaces/Chat/IChat";
 import { IMessage, IMessageCreate } from "../Interfaces/Chat/IMessage";
+import { IProfile } from "../Interfaces/Chat/IProfile";
+import { IConnection } from "../Interfaces/Chat/IConnection";
 
 interface AppContextProps{
     currentUser: IUser | null,
     user:IUser,
+    currentProfileUser: IProfile,
+    currentConnectionUser: IConnection,
     register(e:any, user:any): void,
     login(e:any, user:any): Promise<LoginResponseData>,
     getDepartmentList(): Promise<IDepartment[]>,
@@ -32,11 +36,27 @@ interface AppContextProps{
     getRequest(id:number): Promise<IRequest>;
     createRequest(user_id:number, body:any): Promise<IRequest>;
 
-    getChats(user_id:number):Promise<IChat[]>;
+    getChats(user_id:string):Promise<IChat[]>;
     getUserDetail(user_id:number): Promise<IUser>;
+
+
     findChat(firstId:number, secondId:number): Promise<IChat>;
+    createChat(chatBody:any): Promise<IChat>;
+
     findMessagesByChatId(chatId: string): Promise<IMessage[]>;
     createMessage(body:IMessageCreate): Promise<IMessage>;
+
+    getUsers(offset:number):Promise<IUser[]>;
+
+    getProfileByUserId(userId:number):Promise<IProfile>;
+    getProfileDetail(profileId:string): Promise<IProfile>;
+
+    getConnectionByProfileId(profileId: string): Promise<IConnection>;
+    getConnectionDetail(connectionId:string): Promise<IConnection>;
+    getAllProfiles(): Promise<IProfile[]>;
+
+    addFriend(profileId:string, connectionId:string): Promise<IProfile>
+
 
 }
 
@@ -45,7 +65,26 @@ export const AppContext = createContext({} as AppContextProps);
 
 export const AppContextProvider = ({children}:React.PropsWithChildren)=>{
     const [currentUser, setCurrentUser] = useState<null | IUser>(JSON.parse(localStorage.getItem("currentuser") || "{}"));
+    const [currentProfileUser, setCurrentUserProfile] = useState({} as IProfile);
+    const [currentConnectionUser, setCurrentConnectionUser] = useState({} as IConnection);
     const [user, setUser] = useState({} as IUser);
+
+    useEffect(()=>{
+        if(currentProfileUser){
+            axios.get("api/connection/detail/profile/"+currentProfileUser.id)
+            .then(resp => setCurrentConnectionUser(resp.data));
+        }
+    })
+
+
+    // SET CURRENT USER PROFILE
+    useEffect(()=>{
+        
+        if(currentUser?.id)
+        getProfileByUserId(currentUser?.id)
+       .then(resp => setCurrentUserProfile(resp))
+
+    })
    
     const register = async (e:any, user:any)=>{
         e.preventDefault();
@@ -97,9 +136,6 @@ export const AppContextProvider = ({children}:React.PropsWithChildren)=>{
     }
 
 
-    /*useEffect(()=>{
-        localStorage.setItem("currentuser", JSON.stringify(user));
-    }, [cookie]);*/
 
     const searchUser = async (char:SearchQuery) =>{
         const resp = await axios.post("api/auth/search/user", char);
@@ -199,7 +235,7 @@ export const AppContextProvider = ({children}:React.PropsWithChildren)=>{
         }
     }
 
-    const getChats = async (user_id:number) =>{
+    const getChats = async (user_id:string) =>{
         try{
             const resp = axios.get("api/chat/user/"+user_id)
             return (await resp).data
@@ -207,6 +243,15 @@ export const AppContextProvider = ({children}:React.PropsWithChildren)=>{
             throw new Error("failed to retrieve chat list")
         }
 
+    }
+
+    const createChat = async (chatBody:any) =>{
+        try{
+            const resp = await axios.post("api/chat/new", chatBody);
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to create chat")
+        }
     }
 
     const getUserDetail = async (user_id:number) =>{
@@ -246,9 +291,76 @@ export const AppContextProvider = ({children}:React.PropsWithChildren)=>{
             throw new Error("Failed to create msg");
         }
     }
+
+    const getUsers = async (offset:number) =>{
+        try{
+            const resp = await axios.get("api/auth/all/1/"+offset);
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to retrieve users")
+        }
+    }
+
+
+    const getProfileByUserId = async (userId:number) =>{
+        try{
+            const resp = await axios.get("api/profile/user/"+userId);
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to retrieve profile");
+        }
+    }
+
+    const getProfileDetail = async (profileId:string) =>{
+        try{
+            const resp = await axios.get("api/profile/detail/"+profileId);
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to retrive profile id");
+        }
+    }
+
+    const getConnectionByProfileId = async (profileId: string) =>{
+        try{
+            const resp = await axios.get("api/connection/detail/profile/"+profileId);
+            return resp.data;
+        }catch(err){
+            throw new Error("failed to retrieve connection")
+        }
+    }
+
+    const getAllProfiles = async () =>{
+        try{
+            const resp = await axios.get("api/profile/all");
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to retrieved all profiles")
+        }
+    }
+
+    const addFriend = async (profileId:string, connectionId:string)=>{
+        try{
+            const resp = await axios.post(`api/profile/${profileId}/connection/${connectionId}`);
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to add friend");
+        }
+    }
+
+    const getConnectionDetail = async (connectionId:string) =>{
+        try{
+            const resp = await axios.get("api/connection/detail/"+connectionId);
+            return resp.data;
+        }catch(err){
+            throw new Error("Failed to retrieve connection")
+        }
+    }
+
+
     return(
 
-        <AppContext.Provider value={{register, login, getDepartmentList, getDepartment, getUsersByDeptId, searchUser, getSiteTypeList, getSiteTypeDetail, createSaleRequest, getAllSaleRequestByDept, getAllRequestByDestinationDept, getSaleRequest, getRequest, createRequest, deleteSalesRequest, getAllRequestBySentDept, user, currentUser, getChats, getUserDetail, findChat, findMessagesByChatId, createMessage}}>
+        <AppContext.Provider value={{register, login, getDepartmentList, getDepartment, getUsersByDeptId, searchUser, getSiteTypeList, getSiteTypeDetail, createSaleRequest, getAllSaleRequestByDept, getAllRequestByDestinationDept, getSaleRequest, getRequest, createRequest, deleteSalesRequest, getAllRequestBySentDept, user, currentUser, getChats, getUserDetail, findChat, findMessagesByChatId, createMessage, createChat, getUsers, getProfileByUserId, currentProfileUser, currentConnectionUser,
+            getConnectionByProfileId, getAllProfiles, addFriend, getProfileDetail, getConnectionDetail}}>
             {children}
         </AppContext.Provider>
     )

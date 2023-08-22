@@ -32,4 +32,6 @@ export interface IUserRepository{
 
     getUser(user_id:number): Promise<IUser>;
 
+    getUsers(start:number, end:number): Promise<IUser[]>;
+
 }

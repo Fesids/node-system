@@ -8,7 +8,7 @@ import { IMessage, IMessageCreate } from "../../Interfaces/Chat/IMessage";
 import { MessageContainer } from "../../Components/Chat/MessageContainer";
 export const ChatDetailPage = () =>{
 
-    const {currentUser, getChats, getUserDetail, findChat, findMessagesByChatId, createMessage} = useContext(AppContext);
+    const {currentUser, getChats, getUserDetail, findChat, findMessagesByChatId, createMessage, currentConnectionUser, currentProfileUser} = useContext(AppContext);
     //const [chats, setChats] = useState<IChat[]>([] as IChat[]);
     const [userDetail, setUserDetail] = useState({} as IUser);
     const [chatMessages, setChatMessages] = useState([] as Array<IMessage>);

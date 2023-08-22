@@ -39,24 +39,30 @@ export const LoginPage = () =>{
 
     console.log(userBody);
     return(
-        <div className="create-user-form">
-            <h2 className="mt-2 mb-2">Login</h2>
-            <p>Enter your credentials</p>
-            <form method="post" onSubmit={(e) => LoginHandle(e, userLogin)} >
-                
-
-                <div className="form-group">
-                    <label htmlFor="email" className="form-label mt-3">EMAIL : </label>
-                    <input name="email" className="form-control" id="email" onChange={(e)=> handleChange(e)}></input>
+        <div className="auth-container">
+            <div className="create-user-form">
+                <div className="auth-header">
+                    <h2 className="mt-2 mb-2">Login</h2>
+                    <p>Enter your credentials</p>
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="password" className="form-label mt-3">PASSWORD : </label>
-                    <input name="password" className="form-control" id="password" onChange={(e)=> handleChange(e)}></input>
-                </div>
+                <form method="post" onSubmit={(e) => LoginHandle(e, userLogin)} >
+                    
 
-                <input type="submit" value={"login"}></input>
-            </form>
+                    <div className="form-group">
+                        <label htmlFor="email" className="form-label mt-3">EMAIL : </label>
+                        <input name="email" className="form-control" id="email" onChange={(e)=> handleChange(e)}></input>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="password" className="form-label mt-3">PASSWORD : </label>
+                        <input name="password" className="form-control" id="password" onChange={(e)=> handleChange(e)}></input>
+                    </div>
+
+                    <input type="submit" value={"login"} className="btn-submit-auth"></input>
+                </form>
+            </div>
         </div>
+        
     )
 }

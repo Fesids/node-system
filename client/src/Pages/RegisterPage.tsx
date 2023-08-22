@@ -26,16 +26,24 @@ export const RegisterPage = () =>{
         username: regUser.username,
         email: regUser.email,
         password: regUser.password,
-        uRole: UserRole.EXTERNAL_USER
+        uRole: UserRole.EXTERNAL_USER,
+        department_id: " "
     }
 
     console.log(regBody)
 
 
     return(
-        <div className="create-user-form">
-            <h2 className="mt-2 mb-2">Register</h2>
-            <p>Enter your credentials</p>
+        <div className="auth-container">
+
+            <div className="create-user-form">
+            
+            <div className="auth-header">
+                <h2 className="mt-2 mb-2">Register</h2>
+                <p>Enter your credentials</p>
+            </div>
+
+
             <form method="post" onSubmit={(e) => Register(e, regBody)}>
                 <div className="form-group">
                     <label htmlFor="username" className="form-label mt-3">USERNAME : </label>
@@ -52,8 +60,10 @@ export const RegisterPage = () =>{
                     <input name="password" className="form-control" id="password" onChange={(e)=> handleChange(e)}></input>
                 </div>
 
-                <input type="submit" value={"register"}></input>
+                <input type="submit" value={"register"} className="btn-submit-auth"></input>
             </form>
         </div>
+        </div>
+        
     )
 }

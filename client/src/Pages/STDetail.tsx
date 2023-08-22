@@ -10,10 +10,10 @@ export const STDetail = () =>{
     const {getSiteTypeDetail, createSaleRequest} = useContext(AppContext);
     const [siteDetail, setSiteDetail] = useState({} as ISTD);
     const [newReqBody, setNewReqBody] = useState({} as SaleRequestCreate);
-    //const [newReqBody, setNewReqBody] = useState({} as IRequestClient);
+    
 
     const handleOnChange = (e:any) =>{
-        //setNewReqBody({...newReqBody, [e.target.name]:e.target.value})
+       
         setNewReqBody({...newReqBody, [e.target.name]:e.target.value});
     }
 
@@ -37,7 +37,7 @@ export const STDetail = () =>{
             st_id = id;
         }
         const sendBody = {
-            destination_dept_id: "64949b07b4f28f7fac6ef5a5",
+            destination_dept_id: "64949b07b4f28f7fac6ef5a5",// SALES DEPT ID
             ...newReqBody
         }
         createSaleRequest(sendBody);
@@ -45,13 +45,15 @@ export const STDetail = () =>{
 
 
     return(
-        <div>
-            {<p>{siteDetail.body}</p>}
-            <div>
-                <h2>Are you interest on our services?</h2>
-            </div>
+        <div className="create-request-container">
+            <p className="body">{siteDetail.body}</p>
+            
 
-            <div className="">
+            <div className="create-request">
+
+                <div className="header">
+                    <h2>Are you interest on our services?</h2>
+                </div>
                 <form method="post" onSubmit={(e) =>handleSubmit(e)}>
                     <div className="form-group">
                         <label htmlFor="client_email" className="form-label mt-3">Email : </label>
@@ -66,7 +68,7 @@ export const STDetail = () =>{
                         <input name="body" className="form-control" id="body" onChange={(e)=> handleOnChange(e) }></input>
                     </div>
 
-                    <input type="submit" value={"enviar"}></input>
+                    <input type="submit" value={"send"} className="btn-submit"></input>
                 </form>
             </div>
         </div>

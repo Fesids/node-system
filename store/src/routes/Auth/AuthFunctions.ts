@@ -8,6 +8,7 @@ import { GetUsersByDeptIdController } from '../../controllers/AuthControllers/Ge
 import { useRef } from 'react';
 import { SearchUserController } from '../../controllers/AuthControllers/SearchUsersController';
 import { GetUserDetailController } from '../../controllers/AuthControllers/GetUserById';
+import { GetUsersController } from '../../controllers/AuthControllers/GetUsers';
 
 
 export const teste = (req:Request, res:Response)=>{
@@ -171,4 +172,20 @@ export const getUserDetail = async (req:Request, res:Response) =>{
     });
 
     res.status(statusCode).json(body);
+}
+
+export const GetUsersList = async (req:Request, res:Response) =>{
+    const userRepository = new UserRepository();
+
+    const userController = new GetUsersController(
+        userRepository
+    );
+
+    const {body, statusCode} = await userController.handle({
+        params: req.params
+    });
+
+    res.status(statusCode).json(body);
+
+
 }

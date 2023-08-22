@@ -2,26 +2,30 @@ import { useContext, useEffect, useState } from "react"
 import { AppContext } from "../../Context/AppContext"
 import { IChat } from "../../Interfaces/Chat/IChat";
 import { Conversation } from "../../Components/Chat/Conversation";
+import { Link } from "react-router-dom";
 
 export const ChatPage = () =>{
 
-    const {currentUser, getChats} = useContext(AppContext);
+    const {currentUser, getChats, currentProfileUser, currentConnectionUser} = useContext(AppContext);
     const [chats, setChats] = useState<IChat[]>([] as IChat[]);
 
-    let user_id = 0;
-    if(currentUser?.id){
-        user_id = currentUser.id
+    let user_id = " ";
+    if(currentProfileUser?.id){
+        user_id = currentProfileUser.id
     }
 
     useEffect(()=>{
-        let user_id = 0;
-        if(currentUser?.id){
-            user_id = currentUser.id
+        let user_id = " ";
+        if(currentProfileUser?.id){
+            user_id = currentProfileUser.id
         }
         getChats(user_id).then(resp => setChats(resp))
     })
 
     console.log(chats);
+    console.log(currentProfileUser);
+    console.log(currentConnectionUser);
+   
 
     return(
         <div className="chat-content-container">
@@ -35,7 +39,7 @@ export const ChatPage = () =>{
                         <div className="main-user">
                             <img src="" alt="profile picture"></img>
                         </div>
-                        <p>username</p>
+                        <p>{currentProfileUser.name}</p>
                     </div>
                 </div>
 
@@ -44,32 +48,22 @@ export const ChatPage = () =>{
 
                 <div className="friends-container">
 
-                    {chats.map(chat =>(
+                    {chats.length?chats.map(chat =>(
                         <Conversation data={chat} currentUserId={user_id}/>
-                    ))}
+                    )): "No conversations yet"}
 
-                    {/*<a href="" style={{color: "black", textDecoration: "none"}}>
-
-                        <div className="friends">
-                            <div className="pic">
-                                <img src="" alt=""></img>
-                            </div>
-                            <div className="name">
-                                <h5>Vitoria do Capao</h5>
-                                <p>How are you doing today</p>
-                            </div>
-                            <div className="time_new_msg">
-                                <p>7:30am</p>
-                                <div className="msg">0</div>
-                            </div>
-                        </div>
-
-    </a>*/}
+                   
                     
                 </div>
 
+                <Link to={"connections"}><div className="float">
+                    <div className="line"></div>
+                    <div className="line"></div>
+                    <div className="line"></div>
+                </div></Link>
+
                 <div className="footer">
-                    <div>
+                    <Link to={"/chat/add"}><div>
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="26"
@@ -86,7 +80,7 @@ export const ChatPage = () =>{
                             d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
                         />
                         </svg>
-                    </div>
+                    </div></Link>
                 
                     <div>
                         <svg

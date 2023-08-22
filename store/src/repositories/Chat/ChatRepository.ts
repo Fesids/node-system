@@ -21,10 +21,10 @@ export class ChatRepository implements IChatRepository{
     }
 
     
-    async userChats(userId: number): Promise<IChat[]> {
-        if(!userId){
+    async userChats(profileId:string): Promise<IChat[]> {
+        if(!profileId){
 
-            throw new Error("UserId is required to retrieve chat list");
+            throw new Error("Profile Id is required to retrieve chat list");
 
         };
 
@@ -34,7 +34,7 @@ export class ChatRepository implements IChatRepository{
 
         const chat = await Chat.find<IChatResponse>({
            
-        }).where("members").in([userId]);
+        }).where("members").in([profileId]);
         
         
 

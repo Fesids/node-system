@@ -8,7 +8,7 @@ export interface IChatCreate{
 export interface IChatRepository{
     save(body: IChatCreate): Promise<IChat>;
 
-    userChats(userId: number): Promise<any>;
+    userChats(profileId: string): Promise<any>;
 
     findChat(firstId:number, secondId:number): Promise<any>;
 }

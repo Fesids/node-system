@@ -9,6 +9,8 @@ import { RequestRouter } from "./routes/Request/RequestRoute";
 import { STDRouter } from "./routes/SiteType/SiteTypeRoute";
 import { ChatRouter } from "./routes/Chat/ChatRoutes";
 import { MessageRoutes } from "./routes/message/MessageRoute";
+import { ProfileRouter } from "./routes/Profile/ProfileRoute";
+import { ConnectionRouter } from "./routes/Connection/ConnectionRoute";
 
 
 const main = ()=>{
@@ -24,6 +26,8 @@ const main = ()=>{
     app.use("/api/std", STDRouter);
     app.use("/api/chat", ChatRouter);
     app.use("/api/message", MessageRoutes);
+    app.use("/api/profile", ProfileRouter);
+    app.use("/api/connection", ConnectionRouter);
 
     const port = process.env.PORT || 8080;
     const mongodburl = process.env.MONGODB_URL || "mongodb://localhost:27017/";

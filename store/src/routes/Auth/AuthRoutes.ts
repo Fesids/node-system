@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { GetUsersByDeptId, Register, SearchUserFunction, deleteUser, getUserDetail, login, logout, teste, updateUser } from './AuthFunctions';
+import { GetUsersByDeptId, GetUsersList, Register, SearchUserFunction, deleteUser, getUserDetail, login, logout, teste, updateUser } from './AuthFunctions';
 import { Auth, isAdmin, isExternalUser } from '../../Middleware/AuthenticationMiddleware';
 
 
@@ -14,6 +14,7 @@ app.patch("/update/:id", Auth,isAdmin, updateUser);
 app.get("/users/department/:id", GetUsersByDeptId);
 app.post("/:dept_id/search", SearchUserFunction);
 app.get("/detail/:userId", getUserDetail);
+app.get("/all/:start/:end", GetUsersList);
 //app.get("/testezin", Auth, isExternalUser)
 
 export const AuthRoutes = app;

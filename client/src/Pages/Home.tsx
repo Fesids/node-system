@@ -15,12 +15,12 @@ export const Home = () =>{
 
 
     return(
-        <div>
+        <div className="homepage">
             <h2>Home</h2>
 
-            <div className="site-type-list-container">
+            <div className="border site-list">
                 {STDlist.map(st=> 
-                <div className="site-type-container">
+                <div className="border site-description">
                     <h3>{st.description}</h3>
                     <p><Link to={"/type/detail/"+st.id}>{st.siteType}</Link></p>
                 </div>)}

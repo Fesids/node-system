@@ -4,7 +4,7 @@ export interface IRequest{
     sender_dept_id: string,
     destination_dept_id: string,
     subject: string,
-    body: string,
+    request_body: string,
     created_at: string,
     
 }

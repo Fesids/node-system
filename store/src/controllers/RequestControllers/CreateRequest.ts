@@ -11,14 +11,20 @@ export class CreateRequestController implements IController{
         const {user_id} = httpRequest.params;
         try{
 
-            if(!httpRequest.body){
+            /*if(!httpRequest.body){
                 return badRequest("Please, specify a body");
-            }
+
+
+            }*/
+
+            console.log(user_id);
+            console.log(httpRequest.body)
 
             const req = await this.requestRepository.save(httpRequest.body,user_id);
 
             return ok(req);
         }catch(err){
+            console.log(err)
             return badRequest(err);
         }
 

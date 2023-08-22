@@ -7,7 +7,7 @@ export class DepartmentRepository implements IDepartmentRepository{
 
     async getDepartments(): Promise<IDepartment[]> {
        
-        //const departments = await Department.find<IDepartment>({});
+      
 
         const departments = await Department.find<IDepartmentResponse>({});
 
@@ -66,28 +66,6 @@ export class DepartmentRepository implements IDepartmentRepository{
 
         const department_name = params.department_name;
 
-        /*try{
-            /*const deptUp = await Department.updateOne({_id: id},{$set:{
-                ...params
-            }});
-            const deptUp = await Department.updateOne({_id: id},{department_name});
-
-            const departmentUpSuccess = await Department.findById(id);
-
-            if(!departmentUpSuccess){
-                throw new Error("Department couldn't be updated");
-            }
-
-            return {
-                id: deptWithName.id, //departmentUpSuccess.id,
-                department_name: deptWithName.department_name//departmentUpSuccess.department_name 
-            }
-
-        } catch(err){
-            throw new Error("failed to update");
-        }*/
-
-        //const deptUp = await Department.updateOne({_id: id},{department_name});
 
         const deptUp = await Department.updateOne({_id: id},{$set:{
             ...params
@@ -100,8 +78,8 @@ export class DepartmentRepository implements IDepartmentRepository{
         }
 
         return {
-            id: deptWithName.id, //departmentUpSuccess.id,
-            department_name: deptWithName.department_name//departmentUpSuccess.department_name 
+            id: deptWithName.id, 
+            department_name: deptWithName.department_name
         }
 
     }

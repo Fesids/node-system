@@ -9,7 +9,8 @@ export interface IUser{
     username: string,
     email: string,
     password: string,
-    uRole: UserRole
+    uRole: UserRole,
+    department_id: string
 }
 
 export interface UserRegisterReq extends Omit<IUser, "id">{

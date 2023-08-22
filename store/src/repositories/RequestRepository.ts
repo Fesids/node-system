@@ -67,7 +67,7 @@ export class RequestRepository implements IRequestRepository{
 
     async getSaleRequestList(dept_id: string): Promise<ISalesRequest[]> {
         let q = "select * from sales_request_history where destination_dept_id=?";
-        //let q = "select * from sales_request_history";
+        
 
         const res = await MysqlRequestPool.query<ISalesRequest[]>(q,dept_id);
 
@@ -93,7 +93,7 @@ export class RequestRepository implements IRequestRepository{
     }
     
 
-    async save(params: RequestDTO, user_id:number): Promise<IRequest> {
+    async save(params: RequestDTO, user_id:number): Promise<any> {
         let q = "insert into request_history( user_sender_id,sender_dept_id,destination_dept_id,subject,request_body, created_at, request_image) values(?, ?, ?, ?, ?, ?, ?)";
 
         
@@ -112,10 +112,9 @@ export class RequestRepository implements IRequestRepository{
         ];
 
         let [rows] = await MysqlRequestPool.query<IRequest[]>(q, values);
-        q = "select * from request_history where request_id=?"
-        const res = await MysqlRequestPool.query<IRequest[]>(q, rows[0].request_id);
+        
 
-        return res[0][0];
+        return ""//res[0][0];
 
     }
     

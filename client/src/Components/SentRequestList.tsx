@@ -10,15 +10,15 @@ interface SentReqParams{
 export const SentRequestList = ({list, dept_name}:SentReqParams) =>{
 
     return(
-        <div>
+        <div className="req-list-container">
             {list.length? list.map(resp =>
 
-                <div>
-                    <p><Link to={`/departments/${dept_name}/requests/${resp.request_id}`}>{resp.subject}</Link></p>
+                <div className="req-container">
+                    <Link to={`/departments/${dept_name}/requests/${resp.request_id}`} className="link">{resp.subject}</Link>
                 </div>
             ):
             
-            <p>No requests</p>}
+            <p>No requests found</p>}
 
         </div>
     )

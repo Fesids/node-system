@@ -16,7 +16,7 @@ export interface RequestDTO{
 }
 
 export interface IRequestRepository{
-    save(params: RequestDTO, user_id:number): Promise<IRequest>;
+    save(params: RequestDTO, user_id:number): Promise<any>;
     saveSaleRequest(params: SalesRequestDTO): Promise<ISalesRequest>;
 
     getSaleRequestList(dept_id:string): Promise<ISalesRequest[]>;

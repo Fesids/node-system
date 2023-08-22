@@ -16,7 +16,8 @@ export class UserChatController implements IController{
                 return badRequest("No user id found");
             }
 
-            const resp = await this.chatRepository.userChats(parseInt(userId));
+            const resp = await this.chatRepository.userChats(userId);
+            
 
             return ok(resp);
         }catch(err){

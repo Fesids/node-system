@@ -9,6 +9,21 @@ import {RowDataPacket} from "mysql2"
 
 
 export class UserRepository implements IUserRepository{
+
+    async getUsers(start:number, end:number): Promise<IUser[]> {
+        
+        let q = "select * from users limit 10 offset ?"
+        
+        const users = await MysqlPool.query<IUser[]>(q, end);
+
+        if(!users.length){
+            throw new Error("No user found!");
+
+        }
+
+        return users[0];
+
+    }
     async getUser(user_id: number): Promise<IUser> {
         let q = "select * from users where id=?";
 
@@ -63,9 +78,6 @@ export class UserRepository implements IUserRepository{
         const emailExistQuery = "select * from  where email = ?";
         const userWithEmailExist = await MysqlPool.query<IUser[]>(emailExistQuery, params.email);
 
-        /*if(userWithEmailExist){
-            throw new Error("This email is already in use");
-        }*/
 
         const updatedUser = await MysqlPool.query<IUser[]>(upQuery, [...values, id]);
         const getUpUser = await MysqlPool.query<IUser[]>(findQuery,id)
@@ -141,47 +153,7 @@ export class UserRepository implements IUserRepository{
 
     }
 
-    /*async createUser(params: UserRequest): Promise<User>{
-
-        let user:User;
-        let q = "select * from  where email=? or username= ?";
-
-        MysqlDB.query(q, [params.email, params.username], (err, data)=>{
-            if(err) throw new Error("Somthing went wrong");
-
-            if(data.length) throw new Error("user with this credentials already exists");
-
-            /*const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(params.password, salt);
-
-            q = "insert into (`username`, `email`, `password`) values(?)";
-
-            const values = [
-                params.username,
-                params.email,
-                params.password
-            ];*/
-
-            /*MysqlDB.query(q, values, (err, data:User)=>{
-                if(err) throw Error("failed to register user");
-                user = data;
-            });*/
-            //MysqlDB.query(q, values)
-
-        /*})
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(params.password, salt);
-
-        q = "insert into (`username`, `email`, `password`) values(?)";
-
-        const values = [
-            params.username,
-            params.email,
-            params.password
-        ];
-        user =  MysqlPool.query(q, values)
-
-        return user;*/
+    
        
     
 }
